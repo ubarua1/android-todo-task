@@ -2,8 +2,16 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".HomeScreenActivity">
+
+	<item android:id="@+id/action_calendar_mode_menu"
+		android:icon="@drawable/calendar_mode"
+		app:showAsAction="always"/>
+
+
 	<item android:id="@+id/action_settings"
 	      android:title="@string/action_settings"
-	      android:orderInCategory="100"
-	      app:showAsAction="never"/>
+	      app:showAsAction="collapseActionView"/>
+
+
+
 </menu>
