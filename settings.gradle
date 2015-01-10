@@ -1,1 +1,1 @@
-include ':app', ':floating-action-button', ':caldroid'
+include ':app', ':caldroid'
