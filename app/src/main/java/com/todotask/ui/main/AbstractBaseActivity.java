@@ -7,10 +7,10 @@ import android.support.v7.widget.Toolbar;
 import com.todotask.R;
 
 /**
- * Created by Udayaditya on 29-Dec-14.
+ * Base activity class for all the activities in this app.
+ * Sets up the toolbar and other stuff
  */
-public class AbstractBaseActivity extends ActionBarActivity {
-
+public abstract class AbstractBaseActivity extends ActionBarActivity {
 
 	private Toolbar mActionBarToolbar = null;
 
@@ -18,18 +18,30 @@ public class AbstractBaseActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		getActionBarToolbar();
 		super.onCreate(savedInstanceState);
+		setContentView(getLayoutId());
+		setUpActionBarToolbar();
 
+		onPostSetContentView();
 	}
 
-	protected Toolbar getActionBarToolbar() {
+	private void setUpActionBarToolbar() {
 		if (mActionBarToolbar == null) {
 			mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
 			if (mActionBarToolbar != null) {
 				setSupportActionBar(mActionBarToolbar);
+				getSupportActionBar().setDisplayShowTitleEnabled(false);
+				mActionBarToolbar.bringToFront();
+				getSupportActionBar().setDisplayShowHomeEnabled(true);
 			}
 		}
+	}
+
+	public Toolbar getToolbar() {
 		return mActionBarToolbar;
 	}
+
+	protected abstract void onPostSetContentView();
+
+	protected abstract int getLayoutId();
 }

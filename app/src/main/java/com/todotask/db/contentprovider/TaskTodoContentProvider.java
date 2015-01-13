@@ -58,7 +58,7 @@ public class TaskTodoContentProvider extends ContentProvider {
 			case TASKS_BY_DATE:
 				SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 				String dateSelect = getDateSelection(uri);
-				String whereClause = getDateWhereClause();
+				String whereClause = getDateWhereClause() + " AND " + getTaskDoneWhere();
 
 				builder.setTables(TaskProviderContract.Tables.TASK_TABLE_NAME);
 				Cursor cursor = builder.query(db, projection, whereClause, getSelectionArgs(dateSelect), null,
@@ -68,17 +68,18 @@ public class TaskTodoContentProvider extends ContentProvider {
 				if (null != context) {
 					cursor.setNotificationUri(context.getContentResolver(), uri);
 				}
+
 				return cursor;
 		}
 		return null;
 	}
 
 	private String[] getSelectionArgs(String dateSelect) {
-		return new String[] {dateSelect};
+		return new String[] {dateSelect, TaskProviderContract.UserTasks.TASK_NOT_DONE+""};
 	}
 
 	private String getDateWhereClause() {
-		return TaskProviderContract.TaskColumns.DATE + "=";
+		return TaskProviderContract.TaskColumns.DATE + "=?";
 	}
 
 	private String getDateSelection(Uri uri) {
@@ -124,4 +125,7 @@ public class TaskTodoContentProvider extends ContentProvider {
 	}
 
 
+	public String getTaskDoneWhere() {
+		return TaskProviderContract.TaskColumns.TASK_DONE + "=?";
+	}
 }

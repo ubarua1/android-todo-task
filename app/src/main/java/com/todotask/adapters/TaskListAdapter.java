@@ -1,32 +1,21 @@
 package com.todotask.adapters;
 
 import android.content.Context;
-import android.database.DataSetObserver;
+import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-
-import com.todotask.db.model.TaskItem;
-
-import java.util.ArrayList;
+import android.widget.CursorAdapter;
 
 /**
  *
  */
-public class TaskListAdapter implements ListAdapter {
-
-	/**
-	 *
-	 */
-	private final ArrayList<TaskItem> mItems;
+public class TaskListAdapter extends CursorAdapter {
 
 
-	private final Context mContext;
-
-	public TaskListAdapter(Context context, ArrayList<TaskItem> items) {
-		mItems = items;
-		mContext = context;
+	public TaskListAdapter(Context context, Cursor c, boolean autoRequery) {
+		super(context, c, autoRequery);
 	}
+
 
 	@Override
 	public boolean areAllItemsEnabled() {
@@ -39,41 +28,15 @@ public class TaskListAdapter implements ListAdapter {
 	}
 
 	@Override
-	public void registerDataSetObserver(DataSetObserver observer) {
-
-	}
-
-	@Override
-	public void unregisterDataSetObserver(DataSetObserver observer) {
-
-	}
-
-	@Override
-	public int getCount() {
-
-		return 31;
-	}
-
-	@Override
-	public Object getItem(int position) {
-		return position >= 0 && position < mItems.size() ? mItems.get(position) : null;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
-
-	@Override
-	public boolean hasStableIds() {
-		return false;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		return null;
 	}
+
+	@Override
+	public void bindView(View view, Context context, Cursor cursor) {
+
+	}
+
 
 	@Override
 	public int getItemViewType(int position) {
@@ -85,8 +48,4 @@ public class TaskListAdapter implements ListAdapter {
 		return 1;
 	}
 
-	@Override
-	public boolean isEmpty() {
-		return mItems.isEmpty();
-	}
 }

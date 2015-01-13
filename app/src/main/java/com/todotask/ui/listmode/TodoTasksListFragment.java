@@ -8,9 +8,11 @@ import android.widget.ListView;
 
 import com.todotask.adapters.TaskListAdapter;
 import com.todotask.db.model.TaskItem;
-import com.todotask.ui.listmode.dummy.DummyContent;
+import com.todotask.ui.main.AbstractTodoFragment;
 
 import java.util.ArrayList;
+
+import static com.todotask.common.Constants.TODAYS_DATE_MILL_BUNDLE;
 
 /**
  * A fragment representing a list of Items.
@@ -21,14 +23,13 @@ import java.util.ArrayList;
  */
 public class TodoTasksListFragment extends AbstractTodoFragment {
 
-	private OnFragmentInteractionListener mListener;
-
 	private ArrayList<TaskItem> mListOfTaskItems;
 
 	/**
 	 * List view adapter
 	 */
 	private TaskListAdapter mAdapter;
+
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,12 +38,15 @@ public class TodoTasksListFragment extends AbstractTodoFragment {
 	public TodoTasksListFragment() {
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public static TodoTasksListFragment newInstance(long todayMilBundle) {
 
+		TodoTasksListFragment fragment = new TodoTasksListFragment();
+		Bundle b = new Bundle();
+		b.putLong(TODAYS_DATE_MILL_BUNDLE, todayMilBundle);
+		fragment.setArguments(b);
+
+		return fragment;
 	}
-
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,8 +58,14 @@ public class TodoTasksListFragment extends AbstractTodoFragment {
 					+ " must implement OnFragmentInteractionListener");
 		}
 
-		mListOfTaskItems = new ArrayList<>();
-		mAdapter = new TaskListAdapter(activity, mListOfTaskItems);
+		Bundle bundle = getArguments();
+		if(bundle == null) {
+			throw new IllegalArgumentException("Bundle must not be null");
+		}
+
+		mToday = bundle.getLong(TODAYS_DATE_MILL_BUNDLE);
+		mAdapter = new TaskListAdapter(activity, null, false);
+
 	}
 
 	@Override
@@ -65,43 +75,28 @@ public class TodoTasksListFragment extends AbstractTodoFragment {
 		mAdapter = null;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		//mListener.setToolbarTitle(UiUtils.formatToFullDate(mToday));
+	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
 
 		if (null != mListener) {
 			// Notify the active callbacks interface (the activity, if the
 			// fragment is attached to one) that an item has been selected.
-			mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+			mListener.onFragmentInteraction((TaskItem)l.getItemAtPosition(position));
 		}
 	}
 
 	@Override
 	protected void onDataLoaded(Cursor data) {
 
-		ArrayList<TaskItem> newItems = getTaskItems(data);
+		mAdapter.swapCursor(data);
+		setListAdapter(mAdapter);
+		setEmptyText("No data");
 
 	}
-
-	private ArrayList<TaskItem> getTaskItems(Cursor data) {
-		return null;
-	}
-
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated
-	 * to the activity and potentially other fragments contained in that
-	 * activity.
-	 * <p/>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnFragmentInteractionListener {
-
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(String id);
-	}
-
 }

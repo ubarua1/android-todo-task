@@ -2,5 +2,5 @@
 <resources>
 	<color name="primary_color">#2196f3</color>
 	<color name="status_bar_dark_blue">#0d47a1</color>
-	<color name="fab_btn_bg_color">#f50057</color>
+	<color name="fab_btn_bg_color">#fff51128</color>
 </resources>

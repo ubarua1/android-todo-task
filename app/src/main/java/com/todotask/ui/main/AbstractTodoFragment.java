@@ -1,6 +1,5 @@
-package com.todotask.ui.listmode;
+package com.todotask.ui.main;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -8,12 +7,9 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.todotask.db.contentprovider.TaskProviderContract;
-import com.todotask.ui.listmode.dummy.DummyContent;
+import com.todotask.db.model.TaskItem;
 
 /**
  * A fragment representing a list of Items.
@@ -24,7 +20,7 @@ import com.todotask.ui.listmode.dummy.DummyContent;
  */
 public abstract class AbstractTodoFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-	private OnFragmentInteractionListener mListener;
+	public OnFragmentInteractionListener mListener;
 
 	/**
 	 * The cursor object obtained from the loader
@@ -34,7 +30,7 @@ public abstract class AbstractTodoFragment extends ListFragment implements Loade
 	/**
 	 *
 	 */
-	private long mToday;
+	protected long mToday;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,24 +45,6 @@ public abstract class AbstractTodoFragment extends ListFragment implements Loade
 
 		// Initializing the loader
 		getLoaderManager().initLoader(TasksQuery.NORMAL_LOADER_TOKEN, null, this);
-
-		// TODO: Change Adapter to display your content
-		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
-	}
-
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (OnFragmentInteractionListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
-		}
-
-		mToday = System.currentTimeMillis();
 	}
 
 	@Override
@@ -77,17 +55,6 @@ public abstract class AbstractTodoFragment extends ListFragment implements Loade
 		getLoaderManager().destroyLoader(TasksQuery.NORMAL_LOADER_TOKEN);
 	}
 
-
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-
-		if (null != mListener) {
-			// Notify the active callbacks interface (the activity, if the
-			// fragment is attached to one) that an item has been selected.
-			mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-		}
-	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -144,7 +111,9 @@ public abstract class AbstractTodoFragment extends ListFragment implements Loade
 	public interface OnFragmentInteractionListener {
 
 		// TODO: Update argument type and name
-		public void onFragmentInteraction(String id);
+		public void onFragmentInteraction(TaskItem id);
+
+		public void setToolbarTitle(String title);
 	}
 
 	/**
@@ -157,13 +126,12 @@ public abstract class AbstractTodoFragment extends ListFragment implements Loade
 
 		int NORMAL_LOADER_TOKEN = 0x1;
 
-		String NORMAL_SORT_ORDER = TaskProviderContract.TaskColumns.TASKS_ID + "desc";
+		String NORMAL_SORT_ORDER = TaskProviderContract.TaskColumns._ID + " desc ";
 
 		String[] NORMAL_PROJECTION = new String[] {
-				TaskProviderContract.TaskColumns.TASKS_ID,
+				TaskProviderContract.TaskColumns._ID,
 				TaskProviderContract.TaskColumns.TITLE,
 				TaskProviderContract.TaskColumns.DESCRIPTION,
-				TaskProviderContract.TaskColumns.TASK_DONE
 		};
 
 	}

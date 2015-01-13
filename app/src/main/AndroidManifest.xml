@@ -7,14 +7,22 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.listmode.ListModeActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.listmode.ListModeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".db.contentprovider.TaskTodoContentProvider"
+            android:authorities="com.todotask"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.calendarmode.CalendarModeActivity"
+            android:label="@string/title_activity_calendar_mode" >
         </activity>
     </application>
 

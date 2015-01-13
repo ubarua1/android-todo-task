@@ -63,6 +63,10 @@ public class TaskProviderContract {
 
 		public static final String SINGLE_ITEM_TYPE     = CP_CURSOR_SINGLE + "vnd.todotasks.usertasks";
 
+		public static final int TASK_DONE = 0x101;
+
+		public static final int TASK_NOT_DONE = 0x102;
+
 		public static Uri buildUriForDate(long milliseconds) {
 			String date = String.valueOf(milliseconds);
 			return CONTENT_URI_DATE.buildUpon().appendPath(date).build();

@@ -1,8 +1,16 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+	<style name="AppTheme" parent="Theme.AppCompat.Light">
 		<!-- Customize your theme here. -->
+		<item name="windowActionBar">false</item>
+	</style>
+
+	<style name="bold_text_toolbar_title" parent="android:Widget.TextView">
+		<item name="android:textSize">@dimen/toolbar_title_item_size</item>
+		<item name="android:textColor">@android:color/white</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:fontFamily">sans-serif</item>
 	</style>
 
 </resources>
